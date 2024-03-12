@@ -1,6 +1,6 @@
 prepareDataSet will read the files in the /dataset/no/ and /dataset/yes/ folder then reshapes them to all be the same size, and creates a randomized train/test split. The train test split is saved to the /dataset/train/ and /dataset/test/ folders. The getDataset() function will read in the training and test images and truth table.
 
-Basic Model uses getDataset() to train the scikit algorithms: random forest and isolation forest.  
+Basic Model uses getDataset() to train the scikit algorithms: random forest and Support vector classifier.  
 
 
 trainAutoencoder and MakeAutoeconderPredictions mainly serve to show how to use keras. Shows how to create models using the functional API, how to save and read models.
