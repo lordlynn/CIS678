@@ -87,7 +87,6 @@ def resizeImages(images, shape):
 # If no seed is 0 and split percentage is same, this will alwasy create same split
 # To create new splits provide a seed to randomize the mixing process
 def trainTestSplit(split, Rseed=0):
-    split = split / 100
     random.seed(Rseed)
     
     normal, abnormal = readFiles()
@@ -162,6 +161,4 @@ def trainTestSplit(split, Rseed=0):
 
     return trainingImages, trainingTruth, testImages, testTruth
 
-
-
-# trainTestSplit(75)
+# trainTestSplit(0.75)
