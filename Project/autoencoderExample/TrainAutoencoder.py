@@ -31,7 +31,7 @@ def setupModel():
     x = layers.Conv2D(16, (3, 3), activation='relu')(x)
     x = layers.UpSampling2D((2, 2))(x)
     decoded = layers.Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x)
-
+    
     # This model maps an input to its reconstruction
     autoencoder = keras.Model(input_img, decoded)
     autoencoder.compile(optimizer='adam', loss='binary_crossentropy')

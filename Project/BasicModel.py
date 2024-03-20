@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 
 
-trainingImages, trainingTruth, testImages, testTruth = prepareDataSet.getDataset()
+trainingImages, trainingTruth, testImages, testTruth = prepareDataSet.getDataset(flatten=True)
 
 # Ideas for improvements: 
 #   1.) Normalize the images (make sure all images use full 0-255 range for brightness)

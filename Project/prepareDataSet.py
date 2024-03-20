@@ -12,20 +12,21 @@ def flattenImages(images):
 
     return images
 
-def getDataset():
+def getDataset(flatten=False):
     # Read images from train folder excluding truth.txt
     directory = "./dataset/train/"
     fileNames = [f for f in listdir(directory) if isfile(join(directory, f))]
     fileNames.remove("truth.txt")                               
 
     trainingImages = [np.asarray(ImageOps.grayscale(Image.open(directory + name))) for name in fileNames]
-    trainingImages = flattenImages(trainingImages)
+    if (flatten):
+        trainingImages = flattenImages(trainingImages)
 
     # Read truth.txt from train folder
     with open(directory + "truth.txt", "r") as fp:
         trainingTruth = fp.readlines()
     
-    trainingTruth = [int(line.strip("\n")) for line in trainingTruth]
+    trainingTruth = [[int(line.strip("\n"))] for line in trainingTruth]
 
     ############################################################################################
 
@@ -35,13 +36,14 @@ def getDataset():
     fileNames.remove("truth.txt")
     
     testImages = [np.asarray(ImageOps.grayscale(Image.open(directory + name))) for name in fileNames]
-    testImages = flattenImages(testImages)
+    if (flatten):
+        testImages = flattenImages(testImages)
 
     # Read truth.txt from test folder
     with open(directory + "truth.txt", "r") as fp:
         testTruth = fp.readlines()
     
-    testTruth = [int(line.strip("\n")) for line in testTruth]
+    testTruth = [[int(line.strip("\n"))] for line in testTruth]
 
 
     return trainingImages, trainingTruth, testImages, testTruth
