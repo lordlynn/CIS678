@@ -28,6 +28,10 @@ def getDataset(flatten=False):
     
     trainingTruth = [[int(line.strip("\n"))] for line in trainingTruth]
 
+    if (flatten):
+        trainingTruth = np.array(trainingTruth)
+        trainingTruth = trainingTruth.ravel()
+
     ############################################################################################
 
     # Read images from test folder excluding truth.txt
@@ -45,6 +49,9 @@ def getDataset(flatten=False):
     
     testTruth = [[int(line.strip("\n"))] for line in testTruth]
 
+    if (flatten):
+        testTruth = np.array(testTruth)
+        testTruth = testTruth.ravel()
 
     return trainingImages, trainingTruth, testImages, testTruth
 
@@ -65,14 +72,12 @@ def readFiles():
     fileNames = [f for f in listdir(directory) if isfile(join(directory, f))]
 
     abnormal = [np.asarray(ImageOps.grayscale(Image.open(directory + name))) for name in fileNames]
-
     
     return normal, abnormal
 
 
 # This could definitely be done in fewer steps but it works
 def resizeImages(images, shape):
-    flatShape = shape[0] * shape[1]
 
     for image in range(len(images)):
         # Convert back to PIL image
@@ -91,8 +96,7 @@ def trainTestSplit(split, Rseed=0):
     
     normal, abnormal = readFiles()
 
-    shapes = [image.shape for image in normal] + [image.shape for image in abnormal] 
-    shape = min(shapes)
+    shape = [224, 224]
 
     normal = resizeImages(normal, shape)
     abnormal = resizeImages(abnormal, shape)
@@ -100,7 +104,6 @@ def trainTestSplit(split, Rseed=0):
     imagesForTraining = int((len(normal) + len(abnormal)) * split)
     normalMax = len(normal)
     abnormalMax = len(abnormal)
-
 
     trainingImages = []
     trainingTruth = []
@@ -113,7 +116,6 @@ def trainTestSplit(split, Rseed=0):
             choice = 1
         elif (len(abnormal) <= abnormalMax * (1-split)):
             choice = 0
-
 
         # Add a normal image to the traning data
         if (choice < 0.5):
@@ -128,7 +130,6 @@ def trainTestSplit(split, Rseed=0):
             trainingImages.append(abnormal[index])            
             trainingTruth.append(1)
             del abnormal[index]                               
-
 
     # since training data was deleted from the orginal list,
     #   test data is simply the original list combined    
@@ -149,7 +150,6 @@ def trainTestSplit(split, Rseed=0):
         for d in trainingTruth:
             fp.write(str(d) + "\n")
 
-
     # Save test data to folder train
     directory = "./dataset/test/"
     for image in range(len(testImages)):
@@ -161,4 +161,7 @@ def trainTestSplit(split, Rseed=0):
 
     return trainingImages, trainingTruth, testImages, testTruth
 
-# trainTestSplit(0.75)
+
+
+# --------------- Generate a new train test split ---------------
+trainTestSplit(0.75)
